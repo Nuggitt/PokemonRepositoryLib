@@ -8,7 +8,7 @@ namespace PokemonRepositoryLib
 {
     public class PokemonRepository : IPokemonRepository
     {
-        private int _nextId = 6;
+        private int _nextId = 152;
 
 
         private List<Pokemon> _pokemons = new List<Pokemon>
@@ -176,14 +176,16 @@ namespace PokemonRepositoryLib
         {
             IEnumerable<Pokemon> result = new List<Pokemon>(_pokemons);
 
-            if (type != null)
+            if (!string.IsNullOrEmpty(type))
             {
-                result = result.Where(b => b.Type == type); //Filtering by ABV
+                result = result.Where(b => b.Type.Equals(type, StringComparison.OrdinalIgnoreCase)); // Filtering by Type
             }
-            if (nameIncludes != null)
+
+            if (!string.IsNullOrEmpty(nameIncludes))
             {
-                result = result.Where(b => b.Name.Contains(nameIncludes)); //Filtering by name
+                result = result.Where(b => b.Name.IndexOf(nameIncludes, StringComparison.OrdinalIgnoreCase) >= 0); // The StringComparison.OrdinalIgnoreCase flag ensures a case-insensitive search
             }
+
 
             if (sortBy != null)
             {
@@ -204,6 +206,9 @@ namespace PokemonRepositoryLib
                         break;
                     case "id":
                         result = result.OrderBy(b => b.PokemonId); //Sorting by id
+                        break;
+                    case "id_desc":
+                        result = result.OrderByDescending(b => b.PokemonId); //Sorting by id descending
                         break;
                     default:
                         break;
