@@ -226,10 +226,18 @@ namespace PokemonRepositoryLib
         public Pokemon Add(Pokemon pokemon)
         {
             pokemon.ValidatePokemon();
+
+            // Check if the PokemonId already exists
+            if (_pokemons.Any(p => p.PokemonId == pokemon.PokemonId))
+            {
+                throw new InvalidOperationException("PokemonId must be unique.");
+            }
+
             pokemon.PokemonId = _nextId++;
             _pokemons.Add(pokemon);
             return pokemon;
         }
+
 
         public Pokemon? Remove(int id)
         {

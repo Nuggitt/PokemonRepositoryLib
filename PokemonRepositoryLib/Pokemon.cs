@@ -24,6 +24,7 @@ namespace PokemonRepositoryLib
             }
         }
 
+
         public void ValidateType(string type)
         {
             switch (type.ToLower())
